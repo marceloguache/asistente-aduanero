@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AsistenteAduanero — Automatización Documental</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1220;
+    --navy2: #131d2e;
+    --slate: #1e2d42;
+    --gold: #C9A84C;
+    --gold2: #e8c76a;
+    --cream: #F5F0E8;
+    --green: #2DD4A0;
+    --red: #FF5757;
+    --blue: #4A9EFF;
+    --text: #e8e0d0;
+    --text2: #8a9ab5;
+    --border: rgba(201,168,76,0.2);
+    --border2: rgba(255,255,255,0.06);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,18,32,0.95);
+    backdrop-filter: blur(20px);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--cream);
+  }
+
+  .logo-text span {
+    color: var(--gold);
+  }
+
+  .header-badge {
+    background: rgba(45,212,160,0.12);
+    border: 1px solid rgba(45,212,160,0.3);
+    color: var(--green);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* MAIN */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 40px;
+  }
+
+  /* CONFIG SECTION */
+  .config-section {
+    background: var(--navy2);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+
+  .config-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .config-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .config-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .config-field label {
+    font-size: 11px;
+    color: var(--text2);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .config-field input {
+    background: var(--navy);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .config-field input:focus {
+    border-color: var(--gold);
+  }
+
+  .config-field input::placeholder {
+    color: rgba(138,154,181,0.4);
+  }
+
+  .config-save-btn {
+    margin-top: 16px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+  }
+
+  .config-save-btn:hover { opacity: 0.85; }
+
+  /* UPLOAD ZONE */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 20px;
+    padding: 60px 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(201,168,76,0.02);
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.06);
+  }
+
+  .upload-zone input[type=file] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .upload-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .upload-title {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .upload-sub {
+    color: var(--text2);
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .doc-types {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .doc-type {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* PROCESSING STATUS */
+  #status-area {
+    display: none;
+    background: var(--navy2);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(201,168,76,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  /* RESULTS */
+  #results-area {
+    display: none;
+  }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .results-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--cream);
+  }
+
+  .results-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--navy);
+  }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+
+  .btn-green {
+    background: rgba(45,212,160,0.15);
+    color: var(--green);
+    border: 1px solid rgba(45,212,160,0.3);
+  }
+
+  .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  /* DOCUMENT CARDS */
+  .doc-card {
+    background: var(--navy2);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .doc-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border2);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .doc-card-header:hover { background: rgba(255,255,255,0.02); }
+
+  .doc-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .doc-badge {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+  }
+
+  .badge-factura { background: rgba(74,158,255,0.15); color: var(--blue); border: 1px solid rgba(74,158,255,0.3); }
+  .badge-bl { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid var(--border); }
+  .badge-guia { background: rgba(45,212,160,0.15); color: var(--green); border: 1px solid rgba(45,212,160,0.3); }
+  .badge-dua { background: rgba(255,87,87,0.15); color: var(--red); border: 1px solid rgba(255,87,87,0.3); }
+  .badge-packing { background: rgba(160,128,255,0.15); color: #a080ff; border: 1px solid rgba(160,128,255,0.3); }
+
+  .doc-filename {
+    font-size: 14px;
+    color: var(--cream);
+    font-weight: 500;
+  }
+
+  .doc-status-ok {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--green);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* FIELDS GRID */
+  .fields-grid {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .field-item {
+    background: var(--navy);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .field-label {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .field-value {
+    font-size: 14px;
+    color: var(--cream);
+    font-weight: 500;
+    word-break: break-word;
+  }
+
+  .field-value.number {
+    font-family: 'DM Mono', monospace;
+    color: var(--gold);
+  }
+
+  .field-value.null-val {
+    color: var(--text2);
+    font-style: italic;
+    font-size: 12px;
+  }
+
+  /* CALCULOS CIF */
+  .cif-section {
+    margin: 0 20px 20px;
+    background: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .cif-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cif-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 13px;
+  }
+
+  .cif-row-label { color: var(--text2); }
+  .cif-row-val { font-family: 'DM Mono', monospace; color: var(--text); }
+
+  .cif-row.total {
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    padding-top: 12px;
+    font-size: 16px;
+  }
+
+  .cif-row.total .cif-row-label { color: var(--cream); font-weight: 500; }
+  .cif-row.total .cif-row-val { color: var(--gold); font-family: 'DM Mono', monospace; font-size: 18px; }
+
+  /* SIDUNEA EXPORT */
+  .sidunea-section {
+    margin: 0 20px 20px;
+    background: rgba(45,212,160,0.05);
+    border: 1px solid rgba(45,212,160,0.2);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .sidunea-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .sidunea-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .sidunea-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .sidunea-field .lbl {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    color: rgba(45,212,160,0.6);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sidunea-field .val {
+    font-size: 13px;
+    color: var(--cream);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* AIRTABLE STATUS */
+  .airtable-status {
+    margin: 0 20px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    padding: 12px 14px;
+    border-radius: 8px;
+  }
+
+  .airtable-status.success {
+    background: rgba(45,212,160,0.08);
+    border: 1px solid rgba(45,212,160,0.2);
+    color: var(--green);
+  }
+
+  .airtable-status.error {
+    background: rgba(255,87,87,0.08);
+    border: 1px solid rgba(255,87,87,0.2);
+    color: var(--red);
+  }
+
+  .airtable-status.pending {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid var(--border);
+    color: var(--gold);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--slate);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--cream);
+    z-index: 100;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    max-width: 320px;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { border-color: rgba(45,212,160,0.4); }
+  .toast.error { border-color: rgba(255,87,87,0.4); }
+
+  /* HISTORY */
+  .history-section {
+    margin-top: 40px;
+  }
+
+  .history-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .history-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border2);
+  }
+
+  .history-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .history-card {
+    background: var(--navy2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .history-card:hover { border-color: var(--border); }
+
+  .history-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .history-file { font-size: 12px; color: var(--cream); font-weight: 500; }
+  .history-date { font-size: 10px; color: var(--text2); font-family: 'DM Mono', monospace; }
+  .history-cif { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--gold); }
+
+  /* EMPTY STATE */
+  .empty-history {
+    text-align: center;
+    padding: 30px;
+    color: var(--text2);
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .config-grid { grid-template-columns: 1fr; }
+    .fields-grid { grid-template-columns: repeat(2, 1fr); }
+    .sidunea-grid { grid-template-columns: 1fr; }
+    .history-grid { grid-template-columns: 1fr; }
+    main { padding: 24px 20px; }
+    header { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">⚓</div>
+    <div class="logo-text">Asistente<span>Aduanero</span></div>
+  </div>
+  <div class="header-badge">▶ SISTEMA ACTIVO</div>
+</header>
+
+<main>
+
+  <!-- CONFIG -->
+  <div class="config-section">
+    <div class="config-header">
+      <div class="config-title">⚙ Configuración del sistema</div>
+    </div>
+    <div class="config-grid">
+      <div class="config-field">
+        <label>ANTHROPIC API KEY</label>
+        <input type="password" id="apiKey" placeholder="sk-ant-api03-..." />
+      </div>
+      <div class="config-field">
+        <label>AIRTABLE TOKEN</label>
+        <input type="password" id="airtableToken" placeholder="pat..." />
+      </div>
+      <div class="config-field">
+        <label>AIRTABLE BASE ID</label>
+        <input type="text" id="airtableBase" placeholder="appDmFj4Ptp7ZnGBy" />
+      </div>
+    </div>
+    <button class="config-save-btn" onclick="saveConfig()">GUARDAR CONFIGURACIÓN</button>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="upload-zone" id="uploadZone">
+    <input type="file" id="fileInput" accept=".pdf" multiple onchange="handleFiles(this.files)" />
+    <span class="upload-icon">📄</span>
+    <div class="upload-title">Arrastra tus documentos aquí</div>
+    <div class="upload-sub">o haz clic para seleccionar archivos PDF</div>
+    <div class="doc-types">
+      <span class="doc-type">FACTURA COMERCIAL</span>
+      <span class="doc-type">BILL OF LADING</span>
+      <span class="doc-type">GUÍA AÉREA</span>
+      <span class="doc-type">DUA</span>
+      <span class="doc-type">PACKING LIST</span>
+    </div>
+  </div>
+
+  <!-- STATUS -->
+  <div id="status-area">
+    <div class="status-bar">
+      <div class="spinner" id="spinner"></div>
+      <div class="status-text" id="statusText">Iniciando análisis con Claude AI...</div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-area">
+    <div class="results-header">
+      <div class="results-title">Resultados del análisis</div>
+      <div class="results-actions">
+        <button class="btn btn-secondary" onclick="clearResults()">↺ Nuevo análisis</button>
+        <button class="btn btn-green" onclick="exportAll()">↓ Exportar todo</button>
+      </div>
+    </div>
+    <div id="results-container"></div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="history-section">
+    <div class="history-title">Documentos procesados</div>
+    <div id="history-grid" class="history-grid">
+      <div class="empty-history">No hay documentos procesados aún</div>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =================== CONFIG ===================
+let config = {
+  apiKey: '',
+  airtableToken: '',
+  airtableBase: 'appDmFj4Ptp7ZnGBy'
+};
+
+const AIRTABLE_TABLE = 'tblu7ZcEZWpoKECac';
+
+const FIELD_IDS = {
+  bl:          'fldITZ2H2ocjFiBC5',
+  nroFactura:  'fldx0D9r2o3JEcYBM',
+  proveedor:   'fld5s5N5ydOO5IRgB',
+  fecha:       'fldU2AiMx2DmJSDux',
+  incoterm:    'fldoqPsqFi1nNcoqI',
+  moneda:      'fldSHFPJpyQoxSDPP',
+  fob:         'fldvlfmWguYOPgQPg',
+  flete:       'fld6oWDizNsHzyCqM',
+  seguro:      'fld1y8ZXLGr8Rb5Ar',
+  peso:        'fldwHJCdBLLE5EB44',
+  descripcion: 'fldc2P9GLIH6hyUQA',
+  tasaBCV:     'fldsjWy6bhCzQS4ti',
+  estatus:     'fldXbj3oC5NWADnfm',
+  predID:      'fld7hlqpniEltgud2',
+  confidence:  'fldfL2MRgYzvoU72T',
+};
+
+function saveConfig() {
+  config.apiKey = document.getElementById('apiKey').value;
+  config.airtableToken = document.getElementById('airtableToken').value;
+  config.airtableBase = document.getElementById('airtableBase').value || 'appDmFj4Ptp7ZnGBy';
+  localStorage.setItem('aduanas_config', JSON.stringify(config));
+  showToast('✓ Configuración guardada', 'success');
+}
+
+function loadConfig() {
+  const saved = localStorage.getItem('aduanas_config');
+  if (saved) {
+    config = JSON.parse(saved);
+    document.getElementById('apiKey').value = config.apiKey || '';
+    document.getElementById('airtableToken').value = config.airtableToken || '';
+    document.getElementById('airtableBase').value = config.airtableBase || 'appDmFj4Ptp7ZnGBy';
+  }
+}
+
+// =================== DRAG & DROP ===================
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+// =================== PROCESS FILES ===================
+async function handleFiles(files) {
+  if (!config.apiKey) {
+    showToast('⚠ Configura tu Anthropic API Key primero', 'error');
+    return;
+  }
+
+  const pdfFiles = Array.from(files).filter(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
+  if (pdfFiles.length === 0) { showToast('Solo se aceptan archivos PDF', 'error'); return; }
+
+  showStatus(true);
+  document.getElementById('results-area').style.display = 'none';
+  document.getElementById('results-container').innerHTML = '';
+
+  const results = [];
+  for (let i = 0; i < pdfFiles.length; i++) {
+    const file = pdfFiles[i];
+    setProgress(((i) / pdfFiles.length) * 80);
+    setStatus(`Analizando ${file.name} con Claude AI...`);
+    try {
+      const result = await processDocument(file);
+      results.push({ file, result });
+    } catch (err) {
+      results.push({ file, result: null, error: err.message });
+    }
+  }
+
+  setProgress(90);
+  setStatus('Guardando en Airtable...');
+
+  for (const r of results) {
+    if (r.result && config.airtableToken) {
+      try {
+        const recId = await saveToAirtable(r.result);
+        r.airtableId = recId;
+        r.airtableSaved = true;
+      } catch (e) {
+        r.airtableError = e.message;
+      }
+    }
+  }
+
+  setProgress(100);
+  setStatus('✓ Análisis completado');
+
+  setTimeout(() => {
+    showStatus(false);
+    renderResults(results);
+    saveToHistory(results);
+  }, 800);
+}
+
+// =================== CLAUDE API ===================
+async function processDocument(file) {
+  const base64 = await fileToBase64(file);
+  const docType = detectDocType(file.name);
+
+  const prompt = `Eres experto en documentos de comercio internacional venezolano.
+Analiza este documento (${docType}) y extrae TODOS los datos disponibles.
+Devuelve SOLO un JSON válido sin markdown, sin bloques de código, sin texto adicional.
+
+Formato requerido:
+{
+  "tipo_documento": "${docType}",
+  "Nro_BL_Guia": "string o null",
+  "Nro_Factura": "string o null",
+  "Proveedor_RIF": "string o null",
+  "Consignatario": "string o null",
+  "Fecha": "YYYY-MM-DD o null",
+  "Incoterm": "string mayusculas o null",
+  "Moneda": "codigo ISO o null",
+  "Valor_FOB": número o null,
+  "Flete": número o null,
+  "Seguro": número o null,
+  "Peso_Bruto": número en KG o null,
+  "Descripcion_Mercancia": "string o null",
+  "Puerto_Origen": "string o null",
+  "Puerto_Destino": "string o null",
+  "Aduana": "string o null",
+  "Codigo_Arancelario": "string o null",
+  "Cantidad": número o null,
+  "Unidad_Medida": "string o null",
+  "observaciones": "string o null"
+}
+
+Reglas:
+- Valores numéricos sin símbolos de moneda ni comas
+- Fechas en formato YYYY-MM-DD
+- Incoterm en MAYÚSCULAS (FOB, CIF, EXW, etc)
+- Moneda en código ISO (USD, EUR, CNY, etc)
+- null para campos no encontrados
+- SOLO el JSON, nada más`;
+
+  const headers = new Headers();
+  headers.append('x-api-key', config.apiKey);
+  headers.append('anthropic-version', '2023-06-01');
+  headers.append('content-type', 'application/json');
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 2048,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } },
+          { type: 'text', text: prompt }
+        ]
+      }]
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.error?.message || 'Error en API de Claude');
+  }
+
+  const data = await response.json();
+  const text = data.content[0].text.trim();
+  const jsonStr = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+  return JSON.parse(jsonStr);
+}
+
+// =================== AIRTABLE ===================
+async function saveToAirtable(data) {
+  if (!config.airtableToken || !config.airtableBase) return null;
+
+  const fob = parseFloat(data.Valor_FOB) || 0;
+  const flete = parseFloat(data.Flete) || 0;
+  let seguro = parseFloat(data.Seguro) || 0;
+  if (data.Incoterm === 'CIF' && seguro === 0) seguro = fob * 0.01;
+
+  // BCV rate
+  let tasaBCV = 0;
+  try {
+    const bcv = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const bcvData = await bcv.json();
+    tasaBCV = bcvData.rates?.VES || 0;
+  } catch(e) {}
+
+  const blOrNro = data.Nro_BL_Guia || data.Nro_Factura || `DOC-${Date.now()}`;
+
+  const fields = {
+    [FIELD_IDS.bl]: blOrNro,
+    [FIELD_IDS.nroFactura]: data.Nro_Factura || '',
+    [FIELD_IDS.proveedor]: data.Proveedor_RIF || '',
+    [FIELD_IDS.descripcion]: data.Descripcion_Mercancia || '',
+    [FIELD_IDS.fob]: fob,
+    [FIELD_IDS.flete]: flete,
+    [FIELD_IDS.seguro]: seguro,
+    [FIELD_IDS.peso]: parseFloat(data.Peso_Bruto) || 0,
+    [FIELD_IDS.tasaBCV]: tasaBCV,
+    [FIELD_IDS.estatus]: 'Borrador',
+    [FIELD_IDS.confidence]: 0.98,
+    [FIELD_IDS.predID]: `claude-app-${Date.now()}`
+  };
+
+  if (data.Fecha) fields[FIELD_IDS.fecha] = data.Fecha;
+  if (data.Incoterm) fields[FIELD_IDS.incoterm] = data.Incoterm;
+  if (data.Moneda) fields[FIELD_IDS.moneda] = data.Moneda;
+
+  const res = await fetch(`https://api.airtable.com/v0/${config.airtableBase}/${AIRTABLE_TABLE}`, {
+    method: 'POST',
+    headers: new Headers([
+      ['Authorization', `Bearer ${config.airtableToken}`],
+      ['Content-Type', 'application/json']
+    ]),
+    body: JSON.stringify({ fields, typecast: true })
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error?.message || 'Error al guardar en Airtable');
+  }
+
+  const rec = await res.json();
+  return rec.id;
+}
+
+// =================== RENDER ===================
+function detectDocType(filename) {
+  const f = filename.toLowerCase();
+  if (f.includes('bl') || f.includes('bill') || f.includes('lading')) return 'Bill of Lading';
+  if (f.includes('guia') || f.includes('awb') || f.includes('airway')) return 'Guía Aérea';
+  if (f.includes('dua') || f.includes('declarac')) return 'DUA';
+  if (f.includes('packing') || f.includes('lista')) return 'Packing List';
+  return 'Factura Comercial';
+}
+
+function docBadgeClass(tipo) {
+  if (tipo.includes('Bill') || tipo.includes('BL')) return 'badge-bl';
+  if (tipo.includes('Guía') || tipo.includes('AWB')) return 'badge-guia';
+  if (tipo.includes('DUA')) return 'badge-dua';
+  if (tipo.includes('Packing')) return 'badge-packing';
+  return 'badge-factura';
+}
+
+function fmt(val, isCurrency=false) {
+  if (val === null || val === undefined || val === '') return '<span class="null-val">—</span>';
+  if (isCurrency && typeof val === 'number') return `$${val.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+  return val;
+}
+
+function renderResults(results) {
+  const container = document.getElementById('results-container');
+  container.innerHTML = '';
+
+  results.forEach((r, idx) => {
+    const d = r.result || {};
+    const docType = d.tipo_documento || detectDocType(r.file.name);
+    const fob = parseFloat(d.Valor_FOB) || 0;
+    const flete = parseFloat(d.Flete) || 0;
+    let seguro = parseFloat(d.Seguro) || 0;
+    if (d.Incoterm === 'CIF' && seguro === 0) seguro = fob * 0.01;
+    const cif = fob + flete + seguro;
+
+    const card = document.createElement('div');
+    card.className = 'doc-card';
+
+    if (r.error) {
+      card.innerHTML = `
+        <div class="doc-card-header">
+          <div class="doc-card-title">
+            <span class="doc-badge badge-factura">ERROR</span>
+            <span class="doc-filename">${r.file.name}</span>
+          </div>
+          <span style="color:var(--red);font-size:12px;">✗ ${r.error}</span>
+        </div>`;
+      container.appendChild(card);
+      return;
+    }
+
+    // Airtable status
+    let airtableHtml = '';
+    if (config.airtableToken) {
+      if (r.airtableSaved) {
+        airtableHtml = `<div class="airtable-status success">✓ Guardado en Airtable — Record ID: <strong>${r.airtableId}</strong></div>`;
+      } else if (r.airtableError) {
+        airtableHtml = `<div class="airtable-status error">✗ Error Airtable: ${r.airtableError}</div>`;
+      }
+    } else {
+      airtableHtml = `<div class="airtable-status pending">⚠ Configura Airtable Token para guardar automáticamente</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="doc-card-header" onclick="toggleCard(this)">
+        <div class="doc-card-title">
+          <span class="doc-badge ${docBadgeClass(docType)}">${docType.toUpperCase()}</span>
+          <span class="doc-filename">${r.file.name}</span>
+        </div>
+        <div class="doc-status-ok">✓ Procesado — CIF: $${cif.toLocaleString('en-US',{minimumFractionDigits:2})} &nbsp; ▼</div>
+      </div>
+
+      <div class="card-body">
+        <div class="fields-grid">
+          <div class="field-item"><div class="field-label">Nº B/L o Guía</div><div class="field-value">${fmt(d.Nro_BL_Guia)}</div></div>
+          <div class="field-item"><div class="field-label">Nº Factura</div><div class="field-value">${fmt(d.Nro_Factura)}</div></div>
+          <div class="field-item"><div class="field-label">Proveedor / RIF</div><div class="field-value">${fmt(d.Proveedor_RIF)}</div></div>
+          <div class="field-item"><div class="field-label">Consignatario</div><div class="field-value">${fmt(d.Consignatario)}</div></div>
+          <div class="field-item"><div class="field-label">Fecha</div><div class="field-value">${fmt(d.Fecha)}</div></div>
+          <div class="field-item"><div class="field-label">Incoterm</div><div class="field-value">${fmt(d.Incoterm)}</div></div>
+          <div class="field-item"><div class="field-label">Moneda</div><div class="field-value">${fmt(d.Moneda)}</div></div>
+          <div class="field-item"><div class="field-label">Puerto Origen</div><div class="field-value">${fmt(d.Puerto_Origen)}</div></div>
+          <div class="field-item"><div class="field-label">Puerto Destino</div><div class="field-value">${fmt(d.Puerto_Destino)}</div></div>
+          <div class="field-item"><div class="field-label">Aduana</div><div class="field-value">${fmt(d.Aduana)}</div></div>
+          <div class="field-item"><div class="field-label">Código Arancelario</div><div class="field-value">${fmt(d.Codigo_Arancelario)}</div></div>
+          <div class="field-item"><div class="field-label">Peso Bruto (KG)</div><div class="field-value number">${fmt(d.Peso_Bruto)}</div></div>
+          <div class="field-item" style="grid-column:1/-1"><div class="field-label">Descripción Mercancía</div><div class="field-value">${fmt(d.Descripcion_Mercancia)}</div></div>
+          ${d.observaciones ? `<div class="field-item" style="grid-column:1/-1"><div class="field-label">Observaciones</div><div class="field-value">${d.observaciones}</div></div>` : ''}
+        </div>
+
+        <div class="cif-section">
+          <div class="cif-title">▸ Cálculo CIF — Base Tributos Venezuela</div>
+          <div class="cif-row"><span class="cif-row-label">Valor FOB</span><span class="cif-row-val">$${fob.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+          <div class="cif-row"><span class="cif-row-label">Flete Internacional</span><span class="cif-row-val">$${flete.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+          <div class="cif-row"><span class="cif-row-label">Seguro ${seguro !== parseFloat(d.Seguro||0) ? '(estimado 1% FOB)' : ''}</span><span class="cif-row-val">$${seguro.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+          <div class="cif-row total"><span class="cif-row-label">VALOR CIF TOTAL</span><span class="cif-row-val">$${cif.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+        </div>
+
+        <div class="sidunea-section">
+          <div class="sidunea-title">▸ Campos SIDUNEA World</div>
+          <div class="sidunea-grid">
+            <div class="sidunea-field"><div class="lbl">Campo 7 — Referencia</div><div class="val">${d.Nro_BL_Guia || d.Nro_Factura || '—'}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 8 — Consignatario</div><div class="val">${d.Consignatario || '—'}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 11 — País Exportación</div><div class="val">${d.Puerto_Origen || '—'}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 29 — Aduana de Entrada</div><div class="val">${d.Aduana || '—'}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 22 — Moneda Factura</div><div class="val">${d.Moneda || '—'}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 20 — Incoterm</div><div class="val">${d.Incoterm || '—'}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 42 — Valor FOB</div><div class="val">$${fob.toLocaleString('en-US',{minimumFractionDigits:2})}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 44 — Valor CIF</div><div class="val">$${cif.toLocaleString('en-US',{minimumFractionDigits:2})}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 31 — Descripción</div><div class="val">${(d.Descripcion_Mercancia||'').substring(0,60)}${d.Descripcion_Mercancia?.length > 60 ? '...' : ''}</div></div>
+            <div class="sidunea-field"><div class="lbl">Campo 33 — Código Arancelario</div><div class="val">${d.Codigo_Arancelario || '—'}</div></div>
+          </div>
+          <button class="btn btn-green" onclick="copySIDUNEA(${idx})" style="margin-top:8px">↗ Copiar para SIDUNEA World</button>
+        </div>
+
+        ${airtableHtml}
+      </div>
+    `;
+
+    card._data = d;
+    card._idx = idx;
+    container.appendChild(card);
+  });
+
+  window._lastResults = results;
+  document.getElementById('results-area').style.display = 'block';
+}
+
+function toggleCard(header) {
+  const body = header.nextElementSibling;
+  if (body.style.display === 'none') { body.style.display = ''; }
+  else { body.style.display = 'none'; }
+}
+
+// =================== SIDUNEA COPY ===================
+function copySIDUNEA(idx) {
+  const r = window._lastResults[idx];
+  if (!r?.result) return;
+  const d = r.result;
+  const fob = parseFloat(d.Valor_FOB)||0;
+  const flete = parseFloat(d.Flete)||0;
+  let seguro = parseFloat(d.Seguro)||0;
+  if (d.Incoterm==='CIF' && seguro===0) seguro = fob*0.01;
+  const cif = fob+flete+seguro;
+
+  const text = `=== SIDUNEA WORLD — ${d.tipo_documento} ===
+Campo 7  - Referencia:        ${d.Nro_BL_Guia || d.Nro_Factura || ''}
+Campo 8  - Consignatario:     ${d.Consignatario || ''}
+Campo 11 - País Exportación:  ${d.Puerto_Origen || ''}
+Campo 20 - Incoterm:          ${d.Incoterm || ''}
+Campo 22 - Moneda:            ${d.Moneda || ''}
+Campo 29 - Aduana Entrada:    ${d.Aduana || ''}
+Campo 31 - Descripción:       ${d.Descripcion_Mercancia || ''}
+Campo 33 - Código Aranc.:     ${d.Codigo_Arancelario || ''}
+Campo 35 - Peso Bruto (KG):   ${d.Peso_Bruto || ''}
+Campo 42 - Valor FOB:         ${fob.toFixed(2)}
+Campo 44 - Flete:             ${flete.toFixed(2)}
+Campo 45 - Seguro:            ${seguro.toFixed(2)}
+Campo 46 - VALOR CIF TOTAL:   ${cif.toFixed(2)}
+=========================================`;
+
+  navigator.clipboard.writeText(text).then(() => showToast('✓ Datos SIDUNEA copiados al portapapeles', 'success'));
+}
+
+// =================== HISTORY ===================
+function saveToHistory(results) {
+  const hist = JSON.parse(localStorage.getItem('aduanas_history') || '[]');
+  results.forEach(r => {
+    if (r.result) {
+      const d = r.result;
+      const fob = parseFloat(d.Valor_FOB)||0;
+      const flete = parseFloat(d.Flete)||0;
+      let seg = parseFloat(d.Seguro)||0;
+      if (d.Incoterm==='CIF' && seg===0) seg=fob*0.01;
+      hist.unshift({
+        filename: r.file.name,
+        date: new Date().toLocaleDateString('es-VE'),
+        cif: (fob+flete+seg).toFixed(2),
+        tipo: d.tipo_documento,
+        airtableId: r.airtableId || null
+      });
+    }
+  });
+  localStorage.setItem('aduanas_history', JSON.stringify(hist.slice(0,20)));
+  renderHistory();
+}
+
+function renderHistory() {
+  const hist = JSON.parse(localStorage.getItem('aduanas_history') || '[]');
+  const grid = document.getElementById('history-grid');
+  if (hist.length === 0) {
+    grid.innerHTML = '<div class="empty-history">No hay documentos procesados aún</div>';
+    return;
+  }
+  grid.innerHTML = hist.slice(0,6).map(h => `
+    <div class="history-card">
+      <div class="history-card-top">
+        <span class="history-file">${h.filename}</span>
+        <span class="doc-badge ${docBadgeClass(h.tipo||'')} " style="font-size:9px">${(h.tipo||'').toUpperCase()}</span>
+      </div>
+      <div class="history-cif">$${parseFloat(h.cif).toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+      <div class="history-date">${h.date} ${h.airtableId ? '· ✓ Airtable' : ''}</div>
+    </div>
+  `).join('');
+}
+
+// =================== UTILS ===================
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result.split(',')[1]);
+    reader.onerror = () => rej(new Error('Error leyendo el archivo'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function showStatus(show) {
+  document.getElementById('status-area').style.display = show ? 'block' : 'none';
+  if (!show) setProgress(0);
+}
+
+function setStatus(msg) {
+  document.getElementById('statusText').textContent = msg;
+}
+
+function setProgress(pct) {
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function clearResults() {
+  document.getElementById('results-area').style.display = 'none';
+  document.getElementById('results-container').innerHTML = '';
+  document.getElementById('fileInput').value = '';
+}
+
+function exportAll() {
+  if (!window._lastResults) return;
+  const data = window._lastResults.map(r => r.result).filter(Boolean);
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `aduanas_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+// =================== INIT ===================
+loadConfig();
+renderHistory();
+</script>
+</body>
+</html>
