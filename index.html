@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Productividad con IA | Escala sin Caos</title>
+    
+    <!-- Fuentes: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Iconos: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada de Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#1B3A5C',
+                        electric: '#2E6DA4',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Animaciones personalizadas CSS */
+        .hover-card {
+            transition: all 0.3s ease;
+        }
+        .hover-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Botón de WhatsApp flotante animado */
+        @keyframes pulse-green {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .whatsapp-float {
+            animation: pulse-green 2s infinite;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-light antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-navy text-white w-full z-50 fixed top-0 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 font-bold text-xl tracking-tight">
+                    <i class="fa-solid fa-bolt text-electric mr-2"></i>Productividad<span class="text-electric">IA</span>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#auditoria" class="bg-electric hover:bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold transition-colors">
+                        Auditoría Gratuita
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SECCIÓN 1 — HERO -->
+    <section class="pt-32 pb-20 md:pt-40 md:pb-28 bg-navy text-white relative overflow-hidden">
+        <!-- Decoración de fondo -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-electric opacity-20 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-blue-400 opacity-10 blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center md:text-left flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-3/5 space-y-8">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                    Tu negocio más organizado. <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-electric to-blue-300">Tu equipo más productivo.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto md:mx-0 font-light">
+                    Soy Gestor/a de Productividad con IA. Optimizo los procesos de tu negocio para que recuperes horas, elimines el caos y te enfoques en lo que realmente genera dinero.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#auditoria" class="bg-electric hover:bg-blue-600 text-white text-center px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-lg hover:shadow-electric/50">
+                        Quiero una Auditoría Gratuita
+                    </a>
+                    <a href="#servicios" class="bg-transparent border border-gray-400 hover:border-white hover:bg-white/10 text-white text-center px-8 py-4 rounded-xl font-semibold text-lg transition-all">
+                        Ver mis servicios
+                    </a>
+                </div>
+            </div>
+            <div class="md:w-2/5 hidden md:flex justify-center">
+                <!-- Imagen Abstracta / Representativa -->
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dashboard de Productividad" class="rounded-2xl shadow-2xl border-4 border-electric/30 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2 — EL PROBLEMA -->
+    <section id="problemas" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">El crecimiento no debería doler</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Si te sientes identificado con esto, tu negocio necesita una actualización operativa urgente.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tarjeta 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover-card">
+                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-6 text-red-500 text-2xl">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-3">Pasas más tiempo organizando que ejecutando</h3>
+                    <p class="text-gray-600">Eres el cuello de botella. Tu equipo no puede avanzar sin tu aprobación constante y vives apagando incendios.</p>
+                </div>
+                <!-- Tarjeta 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover-card">
+                    <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mb-6 text-orange-500 text-2xl">
+                        <i class="fa-solid fa-laptop-file"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-3">Tu equipo usa 10 herramientas pero sigue perdiendo información</h3>
+                    <p class="text-gray-600">Pagan Slack, Notion, Drive y Asana, pero la información clave sigue perdiéndose en audios de WhatsApp.</p>
+                </div>
+                <!-- Tarjeta 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover-card">
+                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6 text-blue-500 text-2xl">
+                        <i class="fa-solid fa-users-slash"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy mb-3">Tienes reuniones infinitas y tareas que nunca terminan</h3>
+                    <p class="text-gray-600">Llamadas de 2 horas por Zoom que pudieron ser un email de 5 líneas o un reporte asíncrono.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN: LEAD MAGNET CON IA DE GEMINI -->
+    <section id="mini-auditor" class="py-20 bg-gradient-to-br from-navy to-[#152e4d] text-white relative overflow-hidden border-y border-electric/30">
+        <!-- Decoración -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-electric opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-10">
+                <span class="bg-electric/20 text-blue-300 px-4 py-1.5 rounded-full text-sm font-bold tracking-wider uppercase mb-4 inline-block border border-blue-400/30">
+                    <i class="fa-solid fa-sparkles mr-2"></i> Prueba mi IA en vivo
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 mt-4">Mini Auditoría de Productividad</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                    Cuéntame tu mayor frustración o cuello de botella actual. Mi asistente de Inteligencia Artificial analizará tu caso y te dará <strong>1 solución inmediata</strong> en segundos.
+                </p>
+            </div>
+
+            <div class="bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-2xl shadow-2xl">
+                <label for="audit-input" class="block text-sm font-medium text-blue-200 mb-2">Describe cómo funciona tu equipo hoy o qué te hace perder más tiempo:</label>
+                <textarea id="audit-input" rows="4" class="w-full bg-white/10 border border-white/20 rounded-xl p-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-electric focus:border-transparent transition-all mb-4 resize-none" placeholder="Ejemplo: Mi equipo de 5 personas usa WhatsApp para todo. Los clientes escriben por Instagram y tardamos horas en responder porque se nos pierden los mensajes en el chat..."></textarea>
+                
+                <button id="audit-button" onclick="generateAudit()" class="w-full sm:w-auto bg-electric hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg hover:shadow-electric/50 flex items-center justify-center">
+                    <span>Generar Auditoría Express ✨</span>
+                </button>
+
+                <!-- Contenedor del resultado de la IA -->
+                <div id="audit-result-container" class="mt-8 bg-white/10 border border-electric/40 rounded-xl p-6 hidden relative">
+                    <div class="absolute -top-3 left-6 bg-electric text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                        Diagnóstico de la IA
+                    </div>
+                    
+                    <!-- Estado de Carga -->
+                    <div id="audit-loading" class="flex flex-col items-center justify-center py-6 hidden">
+                        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-electric mb-4"></i>
+                        <p class="text-blue-200 animate-pulse">Analizando tus procesos e identificando cuellos de botella...</p>
+                    </div>
+
+                    <!-- Texto del resultado -->
+                    <div id="audit-result" class="text-gray-200 leading-relaxed font-light hidden prose prose-invert max-w-none">
+                        <!-- Aquí se inyecta la respuesta de Gemini -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3 — MIS SERVICIOS -->
+    <section id="servicios" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-electric font-bold tracking-wider uppercase text-sm">Soluciones</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4 mt-2">Sistemas diseñados para darte libertad</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Servicios concretos con resultados medibles desde el primer mes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Servicio 1 -->
+                <div class="bg-light p-8 rounded-2xl border border-gray-200 hover-card relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-electric transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-electric text-xl">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        </div>
+                        <span class="bg-white px-3 py-1 rounded-full text-sm font-bold text-navy border border-gray-200 shadow-sm">$150 USD</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-navy mb-3">Auditoría de Productividad</h3>
+                    <p class="text-gray-600 mb-6">Análisis profundo de tus procesos actuales, herramientas y equipo para encontrar cuellos de botella y "fugas de dinero" ocultas.</p>
+                    <ul class="space-y-2 mb-8 text-sm text-gray-600">
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Reporte de ineficiencias</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Plan de acción paso a paso</li>
+                    </ul>
+                    <a href="#auditoria" class="block text-center w-full py-3 px-4 bg-white border border-gray-300 rounded-lg text-navy font-semibold hover:border-electric hover:text-electric transition-colors">Solicitar Auditoría</a>
+                </div>
+
+                <!-- Servicio 2 -->
+                <div class="bg-navy p-8 rounded-2xl shadow-xl hover-card relative transform md:-translate-y-4">
+                    <div class="absolute -top-4 right-6 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Más Popular</div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white text-xl">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <span class="bg-white/10 px-3 py-1 rounded-full text-sm font-bold text-white border border-white/20">$500 USD</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Sistema de Productividad con IA</h3>
+                    <p class="text-gray-300 mb-6">Implementación completa de un "Cerebro Operativo". Automatización de tareas, gestión de proyectos y creación de manuales (SOPs).</p>
+                    <ul class="space-y-2 mb-8 text-sm text-gray-300">
+                        <li><i class="fa-solid fa-check text-electric mr-2"></i> Diseño de flujos de trabajo</li>
+                        <li><i class="fa-solid fa-check text-electric mr-2"></i> Conexión de herramientas (Zapier/Make)</li>
+                        <li><i class="fa-solid fa-check text-electric mr-2"></i> Capacitación a tu equipo</li>
+                    </ul>
+                    <a href="#auditoria" class="block text-center w-full py-3 px-4 bg-electric hover:bg-blue-600 rounded-lg text-white font-bold transition-colors shadow-lg shadow-electric/30">Implementar Sistema</a>
+                </div>
+
+                <!-- Servicio 3 -->
+                <div class="bg-light p-8 rounded-2xl border border-gray-200 hover-card relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-electric transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm text-electric text-xl">
+                            <i class="fa-solid fa-handshake-angle"></i>
+                        </div>
+                        <span class="bg-white px-3 py-1 rounded-full text-sm font-bold text-navy border border-gray-200 shadow-sm">$250 USD/mes</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-navy mb-3">Acompañamiento Mensual</h3>
+                    <p class="text-gray-600 mb-6">Mantenimiento de tus automatizaciones, ajustes según tu crecimiento y consultoría continua para seguir optimizando procesos.</p>
+                    <ul class="space-y-2 mb-8 text-sm text-gray-600">
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> Soporte técnico de herramientas</li>
+                        <li><i class="fa-solid fa-check text-green-500 mr-2"></i> 2 sesiones estratégicas al mes</li>
+                    </ul>
+                    <a href="#auditoria" class="block text-center w-full py-3 px-4 bg-white border border-gray-300 rounded-lg text-navy font-semibold hover:border-electric hover:text-electric transition-colors">Agendar Llamada</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 4 — RESULTADOS (Métricas) -->
+    <section class="py-16 bg-electric text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/20">
+                <div class="px-4">
+                    <p class="text-4xl md:text-5xl font-extrabold mb-2">8<span class="text-blue-200">+</span></p>
+                    <p class="text-sm md:text-base font-medium text-blue-100 uppercase tracking-wide">Horas recuperadas /semana</p>
+                </div>
+                <div class="px-4">
+                    <p class="text-4xl md:text-5xl font-extrabold mb-2">3<span class="text-blue-200">x</span></p>
+                    <p class="text-sm md:text-base font-medium text-blue-100 uppercase tracking-wide">Más tareas completadas</p>
+                </div>
+                <div class="px-4">
+                    <p class="text-4xl md:text-5xl font-extrabold mb-2"><span class="text-blue-200">-</span>60<span class="text-blue-200">%</span></p>
+                    <p class="text-sm md:text-base font-medium text-blue-100 uppercase tracking-wide">Reuniones innecesarias</p>
+                </div>
+                <div class="px-4 border-none md:border-solid">
+                    <p class="text-4xl md:text-5xl font-extrabold mb-2">30</p>
+                    <p class="text-sm md:text-base font-medium text-blue-100 uppercase tracking-wide">Días para ver resultados</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 5 — PROCESO -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">¿Cómo transformamos tu negocio?</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">Un método probado de 4 pasos para instalar orden sin detener tu operación diaria.</p>
+            </div>
+
+            <div class="relative">
+                <!-- Línea conectora (visible en desktop) -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-200 -translate-y-1/2 z-0"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
+                    <!-- Paso 1 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-gray-50 mb-6 text-navy text-2xl relative">
+                            <i class="fa-solid fa-stethoscope"></i>
+                            <span class="absolute -top-2 -right-2 bg-electric text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-navy mb-2">Auditoría</h4>
+                        <p class="text-gray-600 text-sm">Diagnosticamos dónde pierdes tiempo y dinero exactamente.</p>
+                    </div>
+                    <!-- Paso 2 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-gray-50 mb-6 text-navy text-2xl relative">
+                            <i class="fa-solid fa-pen-ruler"></i>
+                            <span class="absolute -top-2 -right-2 bg-electric text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-navy mb-2">Diseño del sistema</h4>
+                        <p class="text-gray-600 text-sm">Creamos el mapa de procesos y seleccionamos las herramientas de IA.</p>
+                    </div>
+                    <!-- Paso 3 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 mx-auto bg-electric rounded-full flex items-center justify-center shadow-lg shadow-electric/40 border-4 border-gray-50 mb-6 text-white text-2xl relative transform scale-110">
+                            <i class="fa-solid fa-rocket"></i>
+                            <span class="absolute -top-2 -right-2 bg-navy text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-navy mb-2">Implementación</h4>
+                        <p class="text-gray-600 text-sm">Conectamos el software, automatizamos e instruimos a tu equipo.</p>
+                    </div>
+                    <!-- Paso 4 -->
+                    <div class="text-center">
+                        <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-gray-50 mb-6 text-navy text-2xl relative">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span class="absolute -top-2 -right-2 bg-electric text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">4</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-navy mb-2">Seguimiento</h4>
+                        <p class="text-gray-600 text-sm">Medimos el ahorro en horas y ajustamos para máxima eficiencia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 6 — SOBRE MÍ -->
+    <section id="sobre-mi" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-navy rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+                <div class="md:w-1/3 bg-gray-200 min-h-[300px] relative">
+                    <!-- Placeholder de foto. Reemplazar src con foto real -->
+                    <img src="WhatsApp Image 2023-04-04 at 3.14.25 PM.jpg" alt="Retrato de Marcelo Guache" class="absolute inset-0 w-full h-full object-cover object-top">
+                </div>
+                <div class="md:w-2/3 p-10 md:p-14 text-white flex flex-col justify-center">
+                    <span class="text-electric font-bold tracking-wider uppercase text-sm mb-2">El experto detrás del sistema</span>
+                    <h2 class="text-3xl font-bold mb-6">Hola, soy <span class="text-blue-300">Marcelo Guache</span></h2>
+                    <p class="text-gray-300 text-lg leading-relaxed mb-6">
+                        Desde <strong>Caracas, Venezuela</strong>, me especializo en la <strong>organización de equipos y automatización de procesos</strong>. Mi misión es simple: ayudo a emprendedores y equipos remotos a recuperar tiempo, eliminar el caos operativo y escalar sin necesidad de contratar más personas.
+                    </p>
+                    <p class="text-gray-300 text-lg leading-relaxed">
+                        No ofrezco consejos teóricos, sino soluciones con impacto real. Por ejemplo: <strong>creé una aplicación para agencias de aduanas que eliminó errores humanos causantes de multas gigantes</strong>, reduciendo procesos que tomaban días u horas a tan solo minutos. Ese es el nivel de eficiencia y tranquilidad que instalo en tu negocio.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 7 — TESTIMONIOS -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-navy mb-4">Resultados en el mundo real</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Testimonio 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-gray-200 absolute top-6 left-6 z-0"></i>
+                    <div class="relative z-10">
+                        <p class="text-gray-700 italic mb-6 pt-4 text-lg">
+                            "Antes de implementar el Sistema de IA, pasaba 4 horas al día respondiendo las mismas dudas de mi equipo y buscando archivos. Hoy, el sistema responde por mí y yo por fin pude tomarme un fin de semana libre sin que la agencia colapsara. Una inversión que se pagó sola en 3 semanas."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mr-4">
+                                JC
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-navy">Javier Cárdenas</h4>
+                                <p class="text-sm text-gray-500">Director de Operaciones, Logística Latam</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonio 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-gray-200 absolute top-6 left-6 z-0"></i>
+                    <div class="relative z-10">
+                        <p class="text-gray-700 italic mb-6 pt-4 text-lg">
+                            "Pensé que la IA era solo para programadores. Nos armaron un CRM automático que atiende a los clientes de Instagram al instante. Nuestras ventas subieron un 30% simplemente porque dejamos de ignorar mensajes por falta de tiempo. Brutal."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 font-bold text-xl mr-4">
+                                VR
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-navy">Valeria Rojas</h4>
+                                <p class="text-sm text-gray-500">Fundadora, E-commerce Botánica</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 8 — CTA FINAL -->
+    <section id="auditoria" class="py-24 bg-electric text-white text-center">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl md:text-5xl font-extrabold mb-6 text-white leading-tight">¿Listo para recuperar el control de tu tiempo?</h2>
+            <p class="text-xl text-blue-100 mb-10 max-w-2xl mx-auto font-light">
+                Deja de trabajar para tu negocio y haz que tu negocio trabaje para ti. Hablemos sobre cómo la IA puede resolver tu caos actual.
+            </p>
+            <a href="https://wa.me/584125718385" target="_blank" class="inline-block bg-white text-navy px-10 py-5 rounded-xl font-bold text-xl transition-transform hover:scale-105 shadow-xl shadow-navy/20 mb-4">
+                Agenda tu Auditoría Gratuita
+            </a>
+            <p class="text-sm text-blue-200 mt-4">
+                <i class="fa-solid fa-shield-halved mr-2"></i>Sin compromiso. Sin tecnicismos. Solo resultados.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 9 — FOOTER -->
+    <footer class="bg-gray-900 text-gray-400 py-12 text-center md:text-left">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0">
+                <div class="font-bold text-xl tracking-tight text-white mb-2">
+                    <i class="fa-solid fa-bolt text-electric mr-2"></i>Productividad<span class="text-electric">IA</span>
+                </div>
+                <p class="text-sm">© 2026. Todos los derechos reservados.</p>
+            </div>
+            
+            <div class="flex space-x-6">
+                <a href="[URL]" target="_blank" class="text-gray-400 hover:text-white transition-colors text-2xl">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a href="mailto:tuemail@ejemplo.com" class="text-gray-400 hover:text-white transition-colors text-2xl">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <a href="https://wa.me/584125718385" target="_blank" class="text-gray-400 hover:text-white transition-colors text-2xl">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÓN FLOTANTE WHATSAPP -->
+    <a href="https://wa.me/584125718385" target="_blank" class="fixed bottom-6 right-6 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-[#20bd5a] transition-colors z-50 whatsapp-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts básicos -->
+    <script>
+        // Smooth scrolling nativo mejorado en botones anchor
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // --- GEMINI API INTEGRATION: Mini Auditor de Productividad ---
+        const apiKey = ""; // La clave de API es provista automáticamente por el entorno
+        const model = "gemini-2.5-flash-preview-09-2025";
+
+        // Implementación de backoff exponencial para manejo de errores de red/API
+        async function fetchWithBackoff(url, options, maxRetries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        // Si es error de servidor o límite de cuota, intentamos de nuevo
+                        if (response.status >= 500 || response.status === 429) {
+                            throw new Error(`HTTP Error ${response.status}`);
+                        }
+                        return response; // Si es error de cliente (400), no reintentar
+                    }
+                    return response;
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error;
+                    await new Promise(res => setTimeout(res, delays[i]));
+                }
+            }
+        }
+
+        async function generateAudit() {
+            const inputElement = document.getElementById('audit-input');
+            const resultContainer = document.getElementById('audit-result-container');
+            const resultText = document.getElementById('audit-result');
+            const loadingIndicator = document.getElementById('audit-loading');
+            const button = document.getElementById('audit-button');
+            const userQuery = inputElement.value.trim();
+
+            if (!userQuery) {
+                // Pequeña animación si intenta enviar vacío
+                inputElement.classList.add('ring-2', 'ring-red-500');
+                setTimeout(() => inputElement.classList.remove('ring-2', 'ring-red-500'), 1000);
+                return;
+            }
+
+            // Actualizar UI: Mostrar estado de carga
+            inputElement.disabled = true;
+            button.disabled = true;
+            button.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Generando...';
+            resultContainer.classList.remove('hidden');
+            resultText.classList.add('hidden');
+            loadingIndicator.classList.remove('hidden');
+
+            // Instrucción del sistema para darle contexto y personalidad a la IA
+            const systemPrompt = "Eres el asistente de IA de Marcelo Guache, consultor experto en productividad. Tu misión es leer el problema operativo que tiene un emprendedor, identificar rápidamente su mayor cuello de botella y sugerir 1 automatización de IA clara y práctica que pueda solucionarlo. Sé empático, directo, y muy profesional. Limita tu respuesta a 2 o 3 párrafos cortos. Utiliza etiquetas HTML básicas como <b> para resaltar conceptos clave y <br> para saltos de línea. NO uses markdown con asteriscos, solo usa HTML. Termina tu respuesta invitando al usuario a agendar la Auditoría Gratuita con Marcelo para implementar este sistema.";
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            try {
+                const response = await fetchWithBackoff(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("Error en la respuesta de la API");
+
+                const data = await response.json();
+                let text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar la auditoría.";
+                
+                // Limpiar posibles etiquetas de código markdown residuales
+                text = text.replace(/```html/g, '').replace(/```/g, '');
+
+                resultText.innerHTML = text;
+            } catch (error) {
+                resultText.innerHTML = "<span class='text-red-400'><b>Lo sentimos.</b> Hubo un problema al conectar con la inteligencia artificial. Por favor, intenta de nuevo o escríbeme directamente por WhatsApp.</span>";
+            } finally {
+                // Actualizar UI: Restaurar estado original
+                loadingIndicator.classList.add('hidden');
+                resultText.classList.remove('hidden');
+                inputElement.disabled = false;
+                button.disabled = false;
+                button.innerHTML = 'Generar Auditoría Express ✨';
+            }
+        }
+    </script>
+</body>
+</html>
